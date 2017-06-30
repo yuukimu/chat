@@ -10,7 +10,6 @@ router.get('/', function(req, res, next) {
     values: ['yuukimu']
   }, function (err, rows) {
     console.log(rows);
-    // connection.end();
     res.render('chat', { title: 'Chat', rows: rows });
   });
 });

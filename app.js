@@ -55,6 +55,7 @@ var server = http.createServer(app).listen(app.get('port'),function()
   console.log("Node.js Server Start. port:" + app.get('port'));
 }); 
  
+ var connection = require('./lib/dbfunc.js');
 // ----socket.io add begin----
 // クライアントの接続を待つ(IPアドレスとポート番号を結びつけます)
 var io = require('socket.io').listen(server);
@@ -76,6 +77,10 @@ io.sockets.on('connection', function(socket)
   {
     console.log("massage");
     // クライアント全員に送信
+    var query = "insert into chatlog (author, message) values ('yuukimu', '" + data.value +"')";
+    connection.query(query, function(err, rows) {
+      console.log(err);
+    });
     io.emit('message', { value: data.value });
   });
    
