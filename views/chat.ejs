@@ -20,8 +20,9 @@
     console.log($('#chatm').val());
     console.log("SendMessage");
     var msg = $('#chatm').val();
+    var json = JSON.stringify({ user: 'yuuki', msg: msg });
     // メッセージを発射する
-    socket.emit('message', { value: msg });
+    socket.emit('message', { value: json });
     return false;
   });
 </script>

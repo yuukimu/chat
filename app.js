@@ -76,12 +76,17 @@ io.sockets.on('connection', function(socket)
   socket.on('message', function(data) 
   {
     console.log("massage");
+    console.log(JSON.parse(data.value)['user']);
+    var json = JSON.parse(data.value)
     // クライアント全員に送信
-    var query = "insert into chatlog (author, message) values ('yuukimu', '" + data.value +"')";
-    connection.query(query, function(err, rows) {
-      console.log(err);
+    var query = "insert into chatlog (author, message) values (?, ?)";
+    connection.query({
+      sql: query,
+      timeout: 40000, // 40s
+      values: [json['user'], json['msg']]
+    }, function (err, rows) {
     });
-    io.emit('message', { value: data.value });
+    io.emit('message', { value: json['msg'] });
   });
    
   //------------------------------------------
