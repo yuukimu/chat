@@ -60,19 +60,11 @@ var server = http.createServer(app).listen(app.get('port'),function()
 // クライアントの接続を待つ(IPアドレスとポート番号を結びつけます)
 var io = require('socket.io').listen(server);
  
-//-----------------------------------------------
-//! @brief クライアントが接続してきたときの処理
-//! @param[in] socket セッションの情報
-//-----------------------------------------------
 io.sockets.on('connection', function(socket) 
 {
   console.log("connection");
   console.log(io.clients().server.eio.clientsCount + "Clients");
   
-  //---------------------------------------------------
-  //! @brief メッセージを受けたときの処理
-  //! @param[in] 端末からの送信情報(JSON <value>)
-  //---------------------------------------------------
   socket.on('message', function(data) 
   {
     console.log("massage");
@@ -86,13 +78,9 @@ io.sockets.on('connection', function(socket)
       values: [json['user'], json['msg']]
     }, function (err, rows) {
     });
-    io.emit('message', { value: json['msg'] });
+    io.emit('message', { value: JSON.stringify(json) });
   });
    
-  //------------------------------------------
-  //! @brief クライアントが切断したときの処理
-  //! @param[in] なし
-  //------------------------------------------
   socket.on('disconnect', function()
   {
     console.log("disconnect");
