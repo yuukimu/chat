@@ -9,6 +9,7 @@ var http = require('http');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var chat = require('./routes/chat');
+var redirect = require('./routes/redirect');
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/chat', chat);
+app.use('/redirect', redirect);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,25 @@
+<% include common/_header %>
+
+<p>リダイレクトページ</p>
+<span id="cdown">5</span>秒後に<a href="/chat" title="chat">チャットページ</a>にリダイレクトします
+
+<script type="text/javascript">
+  var time_left = 5;
+  window.onload = function() {
+    setTimeout(countDown, 1000);
+  }
+
+  function countDown() {
+    var obj = document.getElementById('cdown');
+    time_left -= 1;
+    if (time_left === 0) {
+        location.href = '/chat';
+      } else {
+        var obj = document.getElementById('cdown');
+        obj.innerText = time_left;
+        setTimeout(countDown, 1000);
+      }
+  }
+</script>
+
+<% include common/_footer %>
