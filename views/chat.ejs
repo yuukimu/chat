@@ -19,73 +19,84 @@
     <div id="in-content">
       <iframe src="http://www.tokushima-u.ac.jp" frameborder="0" style="height: 90%; width: 100%;"></iframe>
     </div>
+    <div id="cross-content">
+      <h2>githubAPIから取得したデータ</h2>
+      <ul id="repo-list">
+      </ul>
+    </div>
   </div>
 </div>
 
 
 <script src="socket.io/socket.io.js"></script>
+<script src='js/chat_func.js'></script>
 <script type="text/javascript">
-var socket = io();
-var maxId = <%= rows.length  %> + 1;
- 
-socket.on('connect', function(msg) 
-{
-  console.log("Connect");
-});
- 
-// メッセージを受けたとき
-socket.on('message', function(msg) 
-{
-  console.log("ReceiveMessage");
-  var json = JSON.parse(msg.value);
-  var str = maxId + " : " + escape_html(json['user']);
-  str += "<h2>" + escape_html(json['msg']) + "</h2>";
-  maxId += 1;
-  console.log(str);
-  // メッセージを画面に表示する
-  document.getElementById("receiveMsg").innerHTML += str;
-});
- 
-// 切断する
-function DisConnect() {
-  console.log("DisConnect");
-  socket.emit('message', { value: "切断しました"})
-  // socketを切断する
-  socket.disconnect();
-}
 
-$('form').submit(() => {
-  console.log("SendMessage");
-  var usernm = $('#usernm').val();
-  if (usernm === '') {
-    alert("ユーザー名を入力してください");
-    return false;
+  window.onload = function() {
+    getApiData();
   }
-  var msg = $('#chatm').val();
-  if (msg === '') {
-    alert("メッセージを入力してください");
-    return false;
-  }
-  var json = JSON.stringify({ user: usernm, msg: msg });
-  // メッセージを発射する
-  socket.emit('message', { value: json });
-  return false;
-});
 
-function escape_html (string) {
-  if(typeof string !== 'string') {
-    return string;
-  }
-  return string.replace(/[&'`"<>]/g, function(match) {
-    return {
-      '&': '&amp;',
-      "'": '&#x27;',
-      '`': '&#x60;',
-      '"': '&quot;',
-      '<': '&lt;',
-      '>': '&gt;',
-    }[match]
+  var socket = io();
+  var maxId = <%= rows.length  %> + 1;
+
+  socket.on('connect', function(msg) 
+  {
+    console.log("Connect");
   });
+   
+  // メッセージを受けたとき
+  socket.on('message', function(msg) 
+  {
+    console.log("ReceiveMessage");
+    var json = JSON.parse(msg.value);
+    var str = maxId + " : " + escape_html(json['user']);
+    str += "<h2>" + escape_html(json['msg']) + "</h2>";
+    maxId += 1;
+    console.log(str);
+    // メッセージを画面に表示する
+    document.getElementById("receiveMsg").innerHTML += str;
+  });
+   
+  // 切断する
+  function DisConnect() {
+    console.log("DisConnect");
+    socket.emit('message', { value: "切断しました"})
+    // socketを切断する
+    socket.disconnect();
+  }
+
+  $('form').submit(() => {
+    console.log("SendMessage");
+    var usernm = $('#usernm').val();
+    if (usernm === '') {
+      alert("ユーザー名を入力してください");
+      return false;
+    }
+    var msg = $('#chatm').val();
+    if (msg === '') {
+      alert("メッセージを入力してください");
+      return false;
+    }
+    var json = JSON.stringify({ user: usernm, msg: msg });
+    // メッセージを発射する
+    socket.emit('message', { value: json });
+    return false;
+  });
+
+  function escape_html (string) {
+    if(typeof string !== 'string') {
+      return string;
+    }
+    return string.replace(/[&'`"<>]/g, function(match) {
+      return {
+        '&': '&amp;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;',
+      }[match]
+    });
 }
 </script>
 <% include common/_footer %>

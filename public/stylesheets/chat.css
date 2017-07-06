@@ -15,7 +15,7 @@
   position: fixed;
   padding-top: 1em;
   height: 90%;
-  width: 30%;
+  width: 400px;
   background-color: #a9a9a9;
   right: 0;
 }
@@ -26,9 +26,21 @@
 
 #in-content {
   background-color: white;
-  margin-top: 2em;
-  height: 80%;
+  /*margin-top: 2em;*/
+  height: 300px;
   margin: 10px 10px;
+}
+
+#cross-content {
+  background-color: white;
+  margin-top: 2em;
+  padding: 1em 1em;
+  height: 300px;
+  margin: 10px 10px;
+}
+
+li {
+  padding: 5px 0;
 }
 
 .center {
